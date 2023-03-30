@@ -24,8 +24,8 @@ receivers:
   - name: 'telegram'
     telegram_configs:
       - api_url: https://api.telegram.org
-        bot_token: 5721584536:AAFCIPNSKygyDPDpg4K19SXizkQIXJcZVcQ
-        chat_id: -882683331 
+        bot_token: 
+        chat_id: 
         message: >-
           [Alert {{ .Status }}] {{ .CommonLabels.alertname }}: {{ .CommonAnnotations.summary }}
           {{ if .CommonAnnotations.description }} ({{ .CommonAnnotations.description }}) {{ end }}
