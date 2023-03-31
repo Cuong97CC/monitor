@@ -74,8 +74,8 @@ services:
       - 9121
     env_file:
       - .env
-    command:
-      - '--redis.addr='
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - monitor-net
     labels:
