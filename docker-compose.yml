@@ -1,15 +1,14 @@
-version: "3"
+version: '3'
 
 networks:
   monitor-net:
     driver: bridge
 
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
+  prometheus_data: {}
+  grafana_data: {}
 
 services:
-
   prometheus:
     image: prom/prometheus:v2.38.0
     container_name: prometheus
@@ -21,14 +20,15 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=168h'
+      - '--storage.tsdb.retention.time=7d'
+      - '--storage.tsdb.retention.size=10GB'
     restart: always
     expose:
       - 9090
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
 
   alertmanager:
     image: prom/alertmanager:v0.24.0
@@ -44,7 +44,7 @@ services:
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
 
   nodeexporter:
     image: prom/node-exporter:v1.3.1
@@ -64,7 +64,7 @@ services:
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
 
   redis_exporter:
     image: oliver006/redis_exporter:v1.49.0
@@ -75,11 +75,11 @@ services:
     env_file:
       - .env
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 'host.docker.internal:host-gateway'
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
 
   loki:
     image: grafana/loki:2.6.0
@@ -120,16 +120,16 @@ services:
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
 
   caddy:
     image: caddy:2.3.0
     container_name: caddy
     ports:
-      - "3001:3000"
-      - "9090:9090"
-      - "9093:9093"
-      - "3100:3100"
+      - '3001:3000'
+      - '9090:9090'
+      - '9093:9093'
+      - '3100:3100'
     volumes:
       - ./caddy:/etc/caddy
     environment:
@@ -140,4 +140,4 @@ services:
     networks:
       - monitor-net
     labels:
-      org.label-schema.group: "monitoring"
+      org.label-schema.group: 'monitoring'
